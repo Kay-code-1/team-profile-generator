@@ -14,12 +14,13 @@ const render = require("./lib/htmlRenderer");
 // Alternative rendering function
 // const render = require("./lib/page-template.js");
 
+//Array for Team member details
 const teamMembers = [];
-// Create an id array to store the ids.
-// This array will be used to check the potential duplicate id newly entered by user
 
+//Array for Employee IDs.
 const idArray = [];
 
+//Function to create Manager and Team members
 function appMenu() {
   function createManager() {
     console.log("Please build your team");
@@ -34,7 +35,7 @@ function appMenu() {
         {
           type: "input",
           name: "managerId",
-          message: "Enter your Employee ID."
+          message: "Enter your Employee ID.",
         },
         {
           type: "input",
@@ -45,10 +46,10 @@ function appMenu() {
           validate: (email) => {
             valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
             if (valid) {
-              console.log("Correct email format!");
+              console.log("\nCorrect email format!");
               return true;
             } else {
-              console.log("Please enter a valid email");
+              console.log("\nPlease enter a valid email");
               return false;
             }
           },
@@ -60,13 +61,14 @@ function appMenu() {
           //Validate if office number has only digits
           validate: (officeNum) => {
             if (officeNum === NaN) {
-              console.error("Enter a valid phone number!");
+              console.error("\nEnter a valid phone number!");
               return false;
-            } if (officeNum.length < 10 || officeNum.length >10) {
-              console.error("Phone number should be exactly 10 digits!");
+            }
+            if (officeNum.length < 10 || officeNum.length > 10) {
+              console.error("\nPhone number should be exactly 10 digits!");
               return false;
             } else {
-              console.log("Correct phone number!");
+              console.log("\nCorrect phone number!");
               return true;
             }
           },
@@ -80,11 +82,15 @@ function appMenu() {
           answers.managerOfficeNumber
         );
         teamMembers.push(manager);
+        console.log(manager);
+
         idArray.push(answers.managerId);
+        console.log(idArray);
         createTeam();
       });
   }
 
+  //Manager is prompted to create a Team by adding members
   function createTeam() {
     inquirer
       .prompt([
@@ -119,35 +125,38 @@ function appMenu() {
         {
           type: "input",
           name: "engineerName",
-          message: "Enter your name.",
+          message: "Enter Engineer's name.",
         },
         {
           type: "input",
           name: "engineerId",
-          message: "Enter your Employee ID.",
+          message: "Enter Engineer's Employee ID.",
+          //Validation to add only unique employee ID
           validate: (id) => {
-            if(idArray.indexOf(id) !== -1) {
-              console.error('The employee ID is already taken. Enter a new employee ID.');
+            if (idArray.indexOf(id) !== -1) {
+              console.error(
+                "\nThe employee ID is already taken. Enter a new employee ID."
+              );
               return false;
             } else {
-              console.log('Valid employee ID.');
+              console.log("\nValid employee ID.");
               return true;
             }
-          }          
+          },
         },
         {
           type: "input",
           name: "engineerEmail",
-          message: "Enter your Email ID.",
+          message: "Enter Engineer's Email ID.",
           default: () => {},
           //Validation for email ID with Regex
           validate: (email) => {
             valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
             if (valid) {
-              console.log("Correct email format!");
+              console.log("\nCorrect email format!");
               return true;
             } else {
-              console.log("Please enter a valid email");
+              console.log("\nPlease enter a valid email");
               return false;
             }
           },
@@ -155,8 +164,8 @@ function appMenu() {
         {
           type: "input",
           name: "github",
-          message: "Enter your Github profile name."
-        }
+          message: "Enter Engineer's Github profile name.",
+        },
       ])
       .then((answers) => {
         const engineer = new Engineer(
@@ -166,7 +175,11 @@ function appMenu() {
           answers.github
         );
         teamMembers.push(engineer);
+        console.log(engineer);
+
         idArray.push(answers.engineerId);
+        console.log(idArray);
+
         createTeam();
       });
   }
@@ -177,35 +190,38 @@ function appMenu() {
         {
           type: "input",
           name: "internName",
-          message: "Enter your name.",
+          message: "Enter Intern's name.",
         },
         {
           type: "input",
           name: "internId",
-          message: "Enter your Employee ID.",
+          message: "Enter Intern's Employee ID.",
+          //Validation to add only unique employee ID
           validate: (id) => {
-            if(idArray.indexOf(id) !== -1) {
-              console.error('The employee ID is already taken. Enter a new employee ID.');
+            if (idArray.indexOf(id) !== -1) {
+              console.error(
+                "\nThe employee ID is already taken. Enter a new employee ID."
+              );
               return false;
             } else {
-              console.log('Valid employee ID.');
+              console.log("\nValid employee ID.");
               return true;
             }
-          }
+          },
         },
         {
           type: "input",
           name: "internEmail",
-          message: "Enter your Email ID.",
+          message: "Enter Intern's Email ID.",
           default: () => {},
           //Validation for email ID with Regex
           validate: (email) => {
             valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
             if (valid) {
-              console.log("Correct email format!");
+              console.log("\nCorrect email format!");
               return true;
             } else {
-              console.log("Please enter a valid email");
+              console.log("\nPlease enter a valid email");
               return false;
             }
           },
@@ -213,8 +229,8 @@ function appMenu() {
         {
           type: "input",
           name: "school",
-          message: "Enter your school/university name."
-        }
+          message: "Enter your school/university name.",
+        },
       ])
       .then((answers) => {
         const intern = new Intern(
@@ -224,7 +240,10 @@ function appMenu() {
           answers.school
         );
         teamMembers.push(intern);
+        console.log(intern);
+
         idArray.push(answers.internId);
+        console.log(idArray);
 
         createTeam();
       });
@@ -236,6 +255,7 @@ function appMenu() {
       fs.mkdirSync(OUTPUT_DIR);
     }
     fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
+    console.log(teamMembers);
   }
 
   createManager();
