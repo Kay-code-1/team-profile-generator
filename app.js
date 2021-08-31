@@ -10,9 +10,9 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 // Rendering function
-const render = require("./lib/htmlRenderer");
+// const render = require("./lib/htmlRenderer");
 // Alternative rendering function
-// const render = require("./lib/page-template.js");
+const render = require("./lib/page-template.js");
 
 //Array for Team member details
 const teamMembers = [];
